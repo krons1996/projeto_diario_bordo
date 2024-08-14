@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}">
+    <title>Diário de Bordo</title>
+</head>
+<body>
+
+    <section id="section_login">     
+        <h2>Tela de Login</h2>
+        <form action="/logar" method="POST">
+            <label for="ra">RA: </label>
+            <input type="text" id="ra" name="ra" maxlength="8" required>
+            <input type="submit"  id="botao" value="Enviar">
+            <br>
+        </form> 
+        <a href="/novoaluno" class="link">cadastre-se</a><br>       
+    </section>
+
+
+    
+</body>
+</html>
