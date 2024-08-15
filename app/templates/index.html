@@ -11,6 +11,10 @@
 
     <section id="section_login">     
         <h2>Tela de Login</h2>
+        {% if msgbanco %}
+        <div class="mensagem">
+            {{ msgbanco }}
+        </div>
         <form action="/logar" method="POST">
             <label for="ra">RA: </label>
             <input type="text" id="ra" name="ra" maxlength="8" required>

@@ -1,6 +1,81 @@
-from flask import Flask, render_template,request
+from flask import Flask,render_template,request
+"""
+  Que tal uma conexão com o MySQL usando SQLAlchemy?
+  https://www.sqlalchemy.org/
+  
+  passo 1 - pip install flask_sqlalchemy
+  passo 2 - importar no arquivo inicio.py
+"""
+from flask_sqlalchemy import SQLAlchemy
 
+"""
+passo 3 - instalar o sqlalchemy
+passo 4 - importar recursos do módulo sql alchemy
+"""
+
+# Importa o pymysql
+
+
+
+# Importa a função `sessionmaker`, que é usada para criar uma nova sessão para interagir com o banco de dados
+from sqlalchemy.orm import sessionmaker
+
+# Importa as funções `create_engine` para estabelecer uma conexão com o banco de dados e `MetaData` para trabalhar com metadados do banco de dados
+from sqlalchemy import create_engine, MetaData
+
+# Importa a função `automap_base`, que é usada para refletir um banco de dados existente em classes ORM automaticamente
+from sqlalchemy.ext.automap import automap_base
+from aluno import Aluno
+
+"""
+O MetaData no SQLAlchemy é uma classe que representa a coleção de esquemas de tabelas, 
+incluindo informações como tabelas, colunas, chaves, índices e outros elementos associados
+a um banco de dados.
+
+"""
+
+"""
+Criando nossa aplicação
+
+app é um objeto
+Flask( ) é um construtor
+__name__ é o nome da aplicação
+"""
 app = Flask(__name__)
+
+# Criando a configuração do banco de dados
+# Configuração do Banco de Dados
+# biblioteca para converter e resolver problema do @
+import urllib.parse
+
+# Qual o usuário do banco e a senha?
+
+user = 'root'
+password = urllib.parse.quote_plus('root')
+
+host = 'localhost'
+database = 'projetofinal_mg'
+connection_string = f'mysql+pymysql://{user}:{password}@{host}/{database}'
+
+# Criar a engine e refletir o banco de dados existente
+engine = create_engine(connection_string)
+metadata = MetaData()
+metadata.reflect(engine)
+
+# Mapeamento automático das tabelas para classes Python
+Base = automap_base(metadata=metadata)
+Base.prepare()
+
+# Acessando a tabela 'aluno' mapeada
+Aluno = Base.classes.aluno
+
+
+
+# Criar a sessão do SQLAlchemy
+Session = sessionmaker(bind=engine)
+session = Session()
+
+
 
 @app.route('/')
 def index():
@@ -9,6 +84,10 @@ def index():
 @app.route('/novoaluno')
 def cadastrar_aluno():
     return render_template('novoaluno.html')
+
+@app.route('/diariobordo')
+def abrir_diario():
+    return render_template('diariobordo.html')
 
 @app.route('/logar',methods=['POST'])
 def logar_ra():
@@ -19,12 +98,19 @@ def logar_ra():
         mensagem = "ra inválido"
         return render_template('index.html',mensagem=mensagem)
 
-@app.route('/diariobordo')
-def abrir_diario():
-    return render_template('diariobordo.html')
 
 
-@app.route('/olamundo')
-def mostrar():
-    return render_template('pagina.html',titulo_dinamico='titulo ok')
+@app.route('/criaraluno', methods=['POST'])
+def criar():
+    ra = request.form['ra']
+    nome = request.form['nome']
+    tempoestudo = int(request.form['tempoestudo'])
+    rendafamiliar = float(request.form['rendafamiliar'])
+    aluno = Aluno(ra=ra,nome=nome,tempoestudo=tempoestudo,rendafamiliar=rendafamiliar)
+    session.add(aluno)
+    session.commit()
+    mensagem = "cadastro efetuado com sucesso"
+
+    return render_template('index.html',msgbanco=mensagem)
+
 app.run(debug=True)

@@ -15,18 +15,21 @@ h1 , h2, h3{
 }
 
 
-#section_login {
-    background: -webkit-linear-gradient(#00a2ff, #00a2ff6c, #00a2ff);
+#section_login,#cadastro_aluno {
+    background: -webkit-linear-gradient(#00a2ff, #00a2ff3a, #00a2ff);
     width: 500px;
-    border-radius:10px ;
-    align-items: center;
-    align-content: center;    
+    border-radius:10px ; 
     margin-left: auto;
     margin-right: auto;
     margin-top: 150px;
+    align-items: center;
+    align-content: center;   
     text-align: center;
-    padding: 3%;      
+    padding: 3%;
+    box-shadow: 10px 5px 5px #003452;
+
 }
+
 #section_login.link {
     color: rgb(0, 0, 0);
 }
