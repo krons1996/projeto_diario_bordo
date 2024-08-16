@@ -20,6 +20,10 @@
             <input type="text" id="ra" name="ra" maxlength="8" required>
             <input type="submit"  id="botao" value="Enviar">
             <br>
+            {% if mensagem %}
+            <div class="mensagem">
+                {{ mensagem }}
+            </div>
         </form> 
         <a href="/novoaluno" class="link">cadastre-se</a><br>       
     </section>
